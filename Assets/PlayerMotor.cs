@@ -7,11 +7,15 @@ public class PlayerMotor : MonoBehaviour
 {
     Vector2 direction;
     private bool canJump = true;
-    private Rigidbody2D rigidbody2D;
+    private new Rigidbody2D rigidbody2D;
     public float speed = 5;
     public float jumpForce = 5;
     public float maxSpeed = 10;
     public float stoppingForce = 10;
+    public float MaxHealth = 5;
+    public float Health = 5;
+    public bool ConReciredamage = false;
+    public float invincililitqTimer = 2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -48,7 +52,7 @@ public class PlayerMotor : MonoBehaviour
         if (direction.x == 0 && rigidbody2D.linearVelocityX != 0)
         {
             rigidbody2D.AddForce(new Vector2(-rigidbody2D.linearVelocityX * stoppingForce, 0));
-
+        
         }
     }
 
@@ -72,5 +76,6 @@ public class PlayerMotor : MonoBehaviour
         canJump = true;
     }
 }
+
 
 

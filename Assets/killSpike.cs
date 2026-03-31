@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class killSpike : MonoBehaviour
 {
+    public float damage = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,7 +17,8 @@ public class killSpike : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision);
-        Destroy(collision.gameObject);
+
+        //Destroy.(collision.gameObject);
+        collision.GetComponent<PlayerHealth>().AddDamage(damage);
     }
 }
