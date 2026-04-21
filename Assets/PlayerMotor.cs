@@ -16,6 +16,8 @@ public class PlayerMotor : MonoBehaviour
     public float Health = 5;
     public bool ConReciredamage = false;
     public float invincililitqTimer = 2;
+    public float Coin = 0;
+    public Coin cm;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -74,6 +76,15 @@ public class PlayerMotor : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         canJump = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            int v = cm.coinCount++;
+            Destroy(collision.gameObject);
+        }
     }
 }
 
