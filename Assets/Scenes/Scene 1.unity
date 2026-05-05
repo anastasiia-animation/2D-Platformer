@@ -3342,6 +3342,7 @@ GameObject:
   - component: {fileID: 1048695806}
   - component: {fileID: 1048695807}
   - component: {fileID: 1048695808}
+  - component: {fileID: 1048695809}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3362,14 +3363,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 19.94
-  jumpForce: 10
+  jumpForce: 7
   maxSpeed: 10
   stoppingForce: 10
   MaxHealth: 20
   Health: 20
   ConReciredamage: 0
   invincililitqTimer: 10
-  Coin: 0
+  Coin: 1
   cm: {fileID: 0}
 --- !u!114 &1048695803
 MonoBehaviour:
@@ -3559,6 +3560,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   invincililitqTimer: 2
+--- !u!114 &1048695809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048695801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f441786c6591fed4887bbd3cec169401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threshold: -10
 --- !u!1001 &1066588030
 PrefabInstance:
   m_ObjectHideFlags: 0

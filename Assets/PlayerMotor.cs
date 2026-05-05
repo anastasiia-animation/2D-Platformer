@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,7 @@ public class PlayerMotor : MonoBehaviour
     private bool canJump = true;
     private new Rigidbody2D rigidbody2D;
     public float speed = 5;
-    public float jumpForce = 5;
+    public float jumpForce = 7;
     public float maxSpeed = 10;
     public float stoppingForce = 10;
     public float MaxHealth = 5;
@@ -18,6 +19,11 @@ public class PlayerMotor : MonoBehaviour
     public float invincililitqTimer = 2;
     public float Coin = 0;
     public Coin cm;
+    private bool _canJump = true;
+
+    private int _jumpCount = 0;
+    private int maxJumpCount = 2;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -65,17 +71,22 @@ public class PlayerMotor : MonoBehaviour
 
     private void OnJump()
     {
-        if (canJump)
+        if (_canJump)
         {
             rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            canJump = false;
+            _jumpCount++;
+            if(_jumpCount >= maxJumpCount)
+            {
+                _canJump = false;
+            }
         }
        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        canJump = true;
+        _canJump = true;
+        _jumpCount = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
