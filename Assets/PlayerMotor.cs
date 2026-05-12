@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,8 @@ using UnityEngine.InputSystem;
 public class PlayerMotor : MonoBehaviour
 {
     Vector2 direction;
+    public float dashForce = 10;
+    public float dashTime = 0.5f;
     private bool canJump = true;
     private new Rigidbody2D rigidbody2D;
     public float speed = 5;
@@ -20,10 +23,11 @@ public class PlayerMotor : MonoBehaviour
     public float Coin = 0;
     public Coin cm;
     private bool _canJump = true;
+    private bool _isDashing = false;
 
     private int _jumpCount = 0;
     private int maxJumpCount = 2;
-
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -45,6 +49,11 @@ public class PlayerMotor : MonoBehaviour
 
     private void HandleMaxSpeed()
     {
+        if(_isDashing)
+        {
+            return;
+        }
+        //Handle Max Speed
         if (rigidbody2D.linearVelocityX >= maxSpeed)
         {
             rigidbody2D.linearVelocityX = maxSpeed;
@@ -83,6 +92,21 @@ public class PlayerMotor : MonoBehaviour
        
     }
 
+    private void OnDash()
+    {
+        _isDashing = true;
+        rigidbody2D.AddForce(new Vector2(direction.x,0 * dashForce), ForceMode2D.Impulse);
+        StartCoroutine(ResetDash(1));
+
+    }
+
+    IEnumerator ResetDash(float timeToRest)
+    {
+        yield return new WaitForSeconds(timeToRest);
+        _isDashing = false;
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _canJump = true;
@@ -98,6 +122,3 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 }
-
-
-
