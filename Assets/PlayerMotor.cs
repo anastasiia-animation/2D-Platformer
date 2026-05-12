@@ -94,8 +94,9 @@ public class PlayerMotor : MonoBehaviour
 
     private void OnDash()
     {
+        if(_isDashing) return;
         _isDashing = true;
-        rigidbody2D.AddForce(new Vector2(direction.x,0 * dashForce), ForceMode2D.Impulse);
+        rigidbody2D.AddForce(new Vector2(direction.x * dashForce, 0), ForceMode2D.Impulse);
         StartCoroutine(ResetDash(1));
 
     }
