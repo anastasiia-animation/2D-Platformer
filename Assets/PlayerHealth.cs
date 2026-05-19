@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -37,7 +38,11 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(InvincibilityTimer(invincililitqTimer, ResetInvincibility));
         }
 
-        Debug.Log(health);
+        if(health <=0)
+        {
+            SceneManager.LoadScene("GAME FAIL");
+        }
+
     }
 
     IEnumerator InvincibilityTimer(float time, Action callback)

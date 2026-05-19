@@ -22,17 +22,21 @@ public class PlayerMotor : MonoBehaviour
     public float invincililitqTimer = 2;
     public float Coin = 0;
     public Coin cm;
+    private Animator _animator;
     private bool _canJump = true;
     private bool _isDashing = false;
 
     private int _jumpCount = 0;
     private int maxJumpCount = 2;
-    
+
+    private float initXscale;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        initXscale = transform.localScale.x;
     }
     // Update is called once per frame
     private void FixedUpdate()
@@ -40,6 +44,23 @@ public class PlayerMotor : MonoBehaviour
         MovePlayer(); 
         PlayerStopping();
         HandleMaxSpeed();
+        if(direction.x != 0)
+        {
+            _animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            _animator.SetBool("IsMoving", false);
+        }
+
+        if(direction.x > 0)
+        {
+            transform.localScale = new Vector3(initXscale, transform.localScale.y, transform.localScale.z);
+        }
+        else if(direction.x < 0)
+        {
+            transform.localScale = new Vector3(-1 * initXscale, transform.localScale.y, transform.localScale.z);
+        }
     }
 
     private void MovePlayer()
