@@ -9,51 +9,51 @@ public class PlayerHealth : MonoBehaviour
     private float health = 5;
     private bool canReceiveDamage = true;
     public float invincililitqTimer = 2;
+    private object animator;
 
     public delegate void HealthChangeHandler(float newHealth, float amountChanged);
     public event HealthChangeHandler OnHealthChanged;
     public delegate void HealthInitHandler(float newHealth);
     public event HealthInitHandler OnHealthInitialised;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private const string FlashRedAnim = "FlashRed";
+
     void Start()
     {
         health = maxHealth;
         OnHealthInitialised?.Invoke(health);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
+    public object GetAnimator()
+    {
+        return animator;
+    }
 
-    public void AddDamage(float damage)
+    public void AddDamage(float damage, Collider2D collider2D)
     {
         if (canReceiveDamage)
         {
             health -= damage;
             OnHealthChanged?.Invoke(health, -damage);
-            canReceiveDamage = false;
-            StartCoroutine(InvincibilityTimer(invincililitqTimer, ResetInvincibility));
+
+            // Trigger effects
+            if (CameraShake.Instance != null)
+            {
+                CameraShake.Instance.Shake(0.15f, 0.2f);
+            }
+
+            // Start damage cooldown and hitstop together
+            StartCoroutine(DamageCooldownRoutine());
         }
 
-        if(health <=0)
+        if (health <= 0)
         {
             SceneManager.LoadScene("GAME FAIL");
         }
-
-    }
-
-    IEnumerator InvincibilityTimer(float time, Action callback)
-    {
-        yield return new WaitForSeconds(time);
-        callback.Invoke();
-    }
-
-    private void ResetInvincibility()
-    {
-        canReceiveDamage = true;
     }
 
     public void AddHealth(float healthToAdd)
@@ -63,5 +63,20 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log(health);
     }
 
+    // Handles hitstop effect and resets invincibility after the timer ends
+    private IEnumerator DamageCooldownRoutine()
+    {
+        canReceiveDamage = false; // Disable damage taken
+
+        // Hitstop effect (Freeze game)
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.1f);
+        Time.timeScale = 1f;
+
+        // Wait for the remaining invincibility time before allowing damage again
+        // We use Realtime because timeScale changes can mess up normal time
+        yield return new WaitForSecondsRealtime(invincililitqTimer - 0.1f);
+
+        canReceiveDamage = true; // Enable damage taken again
+    }
 }
-    

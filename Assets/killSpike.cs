@@ -19,6 +19,9 @@ public class killSpike : MonoBehaviour
     {
 
         //Destroy.(collision.gameObject);
-        collision.GetComponent<PlayerHealth>().AddDamage(damage);
+        collision.GetComponent<PlayerHealth>().AddDamage(damage, collision);
+
+        //Destroy.(collision.gameObject);
+        collision.GetComponent<PlayerHealth>().GetAnimator();
     }
 }
